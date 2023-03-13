@@ -15,6 +15,9 @@ module.exports = {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            backgroundSize: {
+                '50%': '30%'
+            }
         },
     },
 
