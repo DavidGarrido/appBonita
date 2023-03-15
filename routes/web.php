@@ -23,9 +23,12 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
-Route::post('/search', function(Request $request){
-    return response()->json($request);
+})->name('welcome');
+Route::post('/search', function (Request $request) {
+    // return response()->json($request);
+    return redirect()->route('welcome', [
+        'envio' => $request
+    ])->with('success', 'Se ha actualizado la información');
 });
 
 Route::middleware([
