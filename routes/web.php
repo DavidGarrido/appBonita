@@ -22,12 +22,13 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'envio' => null
     ]);
 })->name('welcome');
 Route::post('/search', function (Request $request) {
-    // return response()->json($request);
+    return response()->json($request['code']);
     return redirect()->route('welcome', [
-        'envio' => $request
+        'envio' => $request['code']
     ])->with('success', 'Se ha actualizado la información');
 });
 

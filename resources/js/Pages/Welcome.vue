@@ -11,7 +11,7 @@ const {envio, phpVersion} = defineProps({
 });
 
   onMounted( () => {
-      console.log(envio === undefined)
+      console.log(envio === null)
   })
 
 const form = reactive({
