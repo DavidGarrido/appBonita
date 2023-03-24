@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Envio;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EnvioController extends Controller
 {
@@ -29,15 +30,27 @@ class EnvioController extends Controller
      */
     public function store(Request $request)
     {
-        $pedido = Pedido::create([
-            'NumeroPedido' => $request['NumeroPedido'] 
-        ]);
-        $envio = Envio::create([
-            'pedido_id' => $pedido['id'],
-            'NumeroGuia' => $request['NumeroGuia'],
-            'transportadora_id' => $request['transportadora']
-        ]);
-        return response()->json($envio);
+        // return response()->json($request);
+        return
+            DB::transaction(function () use ($request) {
+                // $request->validate([
+                //     'NumeroPedido' => 'unique:pedidos,NumeroPedido'
+                // ],[
+                //     'NumeroPedido.unique' => 'El pedido ya tiene asignado un envio'
+                // ]);
+                $pedido = Pedido::find($request['NumeroPedido']);
+                if (!isset($pedido->id)) {
+                    $pedido = Pedido::create([
+                        'NumeroPedido' => $request['NumeroPedido']
+                    ]);
+                }
+                $envio = Envio::create([
+                    'pedido_id' => $pedido['id'],
+                    'NumeroGuia' => $request['NumeroGuia'],
+                    'transportadora_id' => $request['transportadora']
+                ]);
+                return response()->json($envio);
+            });
     }
 
     /**
