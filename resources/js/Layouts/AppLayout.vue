@@ -27,7 +27,7 @@ defineProps({
         <div class="absolute inset-0 flex items-center justify-center opacity-20">
             <img :src="'../images/fondo-bonita.png'">
         </div>
-        <div class="absolute inset-0 z-50 flex flex-col items-center ">
+        <div class="absolute inset-0 z-10 flex flex-col items-center ">
             <nav class="bg-black dark:bg-gray-800  border-yellow-600 border-b-8 dark:border-gray-700 rounded-b-xl w-full">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,10 +110,10 @@ defineProps({
                                 <template v-else>
                                     <Link :href="route('login')"
                                         class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-                                    Log in</Link>
-                                    <Link :href="route('register')"
+                                    Inicio Sesión</Link>
+                                    <!-- <Link :href="route('register')"
                                         class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-                                    Register</Link>
+                                    Register</Link> -->
                                 </template>
                             </div>
                         </div>

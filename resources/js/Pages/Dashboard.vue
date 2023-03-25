@@ -4,6 +4,8 @@ import Welcome from '@/Components/Welcome.vue';
 import { onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import { router, Head, useForm } from '@inertiajs/vue3';
+import Swal from 'sweetalert2'
+
 
 
 
@@ -43,6 +45,17 @@ function enviarDocumento() {
             data.envios = res.data
             if (data.envios.length > 0) {
                 data.viewPlantilla = true
+                Swal.fire({
+                    title: 'Registro Exitoso',
+                    text: `Se han registrado ${data.envios.length} envios.`,
+                    icon: 'success'
+                })
+            }else{
+                Swal.fire({
+                    title: 'No hay registros',
+                    text: `Revisa por favor la información de la plantilla.`,
+                    icon: 'error'
+                })
             }
         }
     )
@@ -61,6 +74,11 @@ function submit() {
     axios.post('/envio', form)
         .then(res => {
             console.log(res.data)
+            Swal.fire({
+                title: res.data['isNew'] ? 'Registro exitoso' : res.data['isNew'] == false && res.data['newEnv'] ? 'Registro exitoso' : 'No se ha hecho el registro',
+                text: res.data['isNew'] ? res.data['newEnv'] ? 'Se ha registrado el pedido con envio.' : 'Se ha registrado el pedido.' : res.data['isNew'] == false && res.data['newEnv'] ? 'Se ha registrado el envio.' : 'Ya existe el registro.',
+                icon: res.data['isNew'] ? 'success' : res.data['isNew'] == false && res.data['newEnv'] ? 'warning' : 'error'
+            })
             if (res.data.id != null) {
                 Object.assign(form, {
                     NumeroPedido: null,
@@ -91,10 +109,10 @@ function gettransportadoras() {
 
         <Head title="Agrega tu Envio" />
         <!-- <template #header>
-                                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                                        Dashboard
-                                    </h2>
-                                </template> -->
+                                                            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                                                                Dashboard
+                                                            </h2>
+                                                        </template> -->
         <div class="flex-1 w-full md:w-3/4 py-3 flex flex-col gap-2">
             <div class="overflow-hidden shadow-xl flex flex-col lg:flex-row p-2 rounded-lg bg-white gap-3">
                 <!-- <Welcome /> -->
@@ -112,14 +130,17 @@ function gettransportadoras() {
                     <!-- <input type="file" @input="$event => formDoc.doc = $event.target.files[0]"> -->
                     <input type="file" @change="uploadDoc" class="hidden" id="chargeDoc">
                     <label class="bg-green-700 text-white font-bold flex items-center justify-center p-2 rounded-lg flex-1"
-                        for="chargeDoc"><p class="text-center">Cargar Plantilla</p></label>
+                        for="chargeDoc">
+                        <p class="text-center">Cargar Plantilla</p>
+                    </label>
                     <progress v-if="formDoc.progress" :value="formDoc.progress.percentage" max="100">
                         {{ formDoc.progress.percentage }}%
                     </progress>
                     <!-- <button type="submit">Cargar</button> -->
                 </form>
             </div>
-            <div v-if="data.viewPlantilla" class="bg-white p-3 flex flex-col gap-3 rounded-lg shadow-xl border-2 border-gray-300 mx-2">
+            <div v-if="data.viewPlantilla"
+                class="bg-white p-3 flex flex-col gap-3 rounded-lg shadow-xl border-2 border-gray-300 mx-2 bg-opacity-80">
                 <div class="flex justify-center">
                     <p class="text-center font-bold text-xl">Se há almacenado la plantilla</p>
                 </div>
@@ -150,7 +171,8 @@ function gettransportadoras() {
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <button @click="data.viewPlantilla = false" class="bg-violet-900 text-white p-3 rounded-lg font-bold">Perfecto</button>
+                    <button @click="data.viewPlantilla = false"
+                        class="bg-violet-900 text-white p-3 rounded-lg font-bold">Perfecto</button>
                 </div>
 
             </div>
