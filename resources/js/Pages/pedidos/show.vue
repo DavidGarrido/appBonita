@@ -27,18 +27,18 @@ const volver = () => {
     <Head title="Pedido" />
     <app-layout>
         <p v-if="pedido == null">No existe el numero de pedido</p>
-        <div class="flex flex-col items-center my-16" v-else>
+        <div class="flex flex-col items-center my-16 p-3" v-else>
             <!-- <p>{{ pedido }}</p> -->
-            <p class="uppercase font-bold text-xl">Numero de pedido: {{ pedido.NumeroPedido }} </p>
-            <p class="uppercase font-bold text-xl">Fecha de ingreso: {{ pedido.created_at.split('T')[0] }} </p>
+            <p class="uppercase font-bold text-xl text-center">Numero de pedido: {{ pedido.NumeroPedido }} </p>
+            <p class="uppercase font-bold text-xl text-center">Fecha de ingreso: {{ pedido.created_at.split('T')[0] }} </p>
             <div v-if="pedido.envios.length == 0">
                 <p>No se ha realizado el envio de este pedido.</p>
             </div>
             <div v-else class="flex flex-col items-center">
-                <p v-if="pedido.envios.length == 1" class="font-bold text-3xl">Tu pedido está en camino.</p>
+                <p v-if="pedido.envios.length == 1" class="font-bold text-3xl text-center">Tu pedido está en camino.</p>
                 <div v-for="env in pedido.envios" :key="env" class="flex flex-col items-center">
-                    <p class="uppercase font-bold text-xl">Tu número de guia es: {{ env.NumeroGuia }} </p>
-                    <p class="uppercase font-bold text-xl">Consultalo en el canal oficial de {{ env.transportadora.nombre }}
+                    <p class="uppercase font-bold text-xl text-center">Tu número de guia es: {{ env.NumeroGuia }} </p>
+                    <p class="uppercase font-bold text-xl text-center">Consultalo en el canal oficial de {{ env.transportadora.nombre }}
                     </p>
                 </div>
             </div>

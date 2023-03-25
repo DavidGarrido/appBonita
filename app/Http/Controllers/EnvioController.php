@@ -38,18 +38,27 @@ class EnvioController extends Controller
                 // ],[
                 //     'NumeroPedido.unique' => 'El pedido ya tiene asignado un envio'
                 // ]);
-                $pedido = Pedido::find($request['NumeroPedido']);
+                $result = [];
+                $pedido = Pedido::where('NumeroPedido',$request['NumeroPedido'])->first();
+                $result['isNew'] = false;
+                $result['newEnv'] = false;
                 if (!isset($pedido->id)) {
                     $pedido = Pedido::create([
                         'NumeroPedido' => $request['NumeroPedido']
                     ]);
+                    $result['isNew'] = true;
                 }
-                $envio = Envio::create([
-                    'pedido_id' => $pedido['id'],
-                    'NumeroGuia' => $request['NumeroGuia'],
-                    'transportadora_id' => $request['transportadora']
-                ]);
-                return response()->json($envio);
+
+                if($pedido->envios()->count() == 0 && isset($request['NumeroGuia']) && $request['NumeroGuia'] != ''){
+                    Envio::create([
+                        'pedido_id' => $pedido['id'],
+                        'NumeroGuia' => $request['NumeroGuia'],
+                        'transportadora_id' => $request['transportadora']
+                    ]);
+                    $result['newEnv'] = true;
+                }
+                $result['pedido'] = $pedido->with('envios')->first();
+                return response()->json($result);
             });
     }
 

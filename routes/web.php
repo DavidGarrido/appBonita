@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocController;
 use App\Http\Controllers\EnvioController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\TransportadoraController;
@@ -31,6 +32,7 @@ Route::get('/', function () {
 Route::resource('/pedido', PedidoController::class )->names('pedidos');
 Route::resource('/envio', EnvioController::class)->names('envio');
 Route::resource('/transportadora', TransportadoraController::class)->names('transportadora');
+Route::post('/cargaPlantilla', [DocController::class, 'store'])->name('cargaPlantilla');
 Route::post('/search', function (Request $request) {
     $envio = Envio::where('NumeroPedido', $request['code'])->first();
     return response()->json($envio);
